@@ -10,11 +10,24 @@ MainWindow::MainWindow(QWidget *parent) :
     label = ui->label;
     dev = new rsdevice();
     dev->initRsDevice();
-    dev->printfRsDevice(pTextEdit);
+    printfRsDevice();
 
 }
 
-QImage MainWindow::Mat2QImage(Mat& image)
+void MainWindow::printfRsDevice(){
+
+    QString printfStr = "\nUsing device 0,name: " +dev->getDevName();
+    pTextEdit->appendPlainText(printfStr);
+    printfStr.clear();
+    printfStr = "    Serial number: " + dev->getDevSerial();
+    pTextEdit->appendPlainText(printfStr);
+    printfStr.clear();
+    printfStr = "    Firmware version: " + dev->devFwVersion;
+    pTextEdit->appendPlainText(printfStr);
+    printfStr.clear();
+}
+
+QImage MainWindow::mat2QImage(Mat& image)
 {
     QImage img;
 
@@ -36,14 +49,19 @@ QImage MainWindow::Mat2QImage(Mat& image)
 void MainWindow::setPicName(QString name){
     picName = name;
     Mat image = imread(picName.toStdString(), 1);
-    QImage img = Mat2QImage(image);
+    QImage img = mat2QImage(image);
     label->setPixmap(QPixmap::fromImage(img));
 }
 
 void MainWindow::paintEvent(QPaintEvent *event){
    if(dev->isSteamEnable()){
-      Mat rgb = dev->getFrameDate();
-      QImage img = Mat2QImage(rgb);
+      uchar* pRgb = dev->getFrameData();
+
+      Mat rgb_show;
+      Mat rgb(480, 640, CV_8UC3, pRgb);
+      cvtColor(rgb, rgb_show, CV_BGR2RGB);
+
+      QImage img = Mat2QImage(rgb_show);
       label->setPixmap(QPixmap::fromImage(img));
    }else{
        dev->enableStream();

@@ -25,8 +25,9 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     void setPicName(QString name);
-    QImage Mat2QImage(Mat& image);
+    QImage mat2QImage(Mat& image);
     void paintEvent(QPaintEvent *event);
+    void printfRsDevice();
 
 private:
     Ui::MainWindow *ui;

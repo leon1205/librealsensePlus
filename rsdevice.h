@@ -1,9 +1,7 @@
 #ifndef RSDEVICE_H
 #define RSDEVICE_H
 #include <librealsense/rs.hpp>
-#include <QPlainTextEdit>
-#include <opencv2/opencv.hpp>
-using namespace cv;
+
 
 class rsdevice
 {
@@ -20,11 +18,31 @@ public:
     bool streamEnable;
 
 public:
+    QString getDevName(){
+        return devName;
+    }
+
+    QString getDevSerial(){
+        return devSerial;
+    }
+
+    QString getDevFwVersion(){
+        return devFwVersion;
+    }
+
+    QString getCamType(){
+        return devCamType;
+    }
+
+    QString getIspFwVersion(){
+        return devIspFwVersion;
+    }
+
+public:
     rsdevice();
-    void printfRsDevice(QPlainTextEdit* edit);
     void initRsDevice();
     void enableStream();
-    Mat getFrameDate();
+    uchar * getFrameData();
     bool isSteamEnable();
 };
 

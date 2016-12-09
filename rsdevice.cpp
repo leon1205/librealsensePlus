@@ -39,12 +39,13 @@ void rsdevice::enableStream(){
     dev->start();
 }
 
-Mat rsdevice::getFrameDate(){
+uchar * rsdevice::getFrameDate(){
     dev->wait_for_frames();
-    Mat rgb_show;
-    Mat rgb(480, 640, CV_8UC3, (uchar *) dev->get_frame_data(rs::stream::color));
-    cvtColor(rgb, rgb_show, CV_BGR2RGB);
-    return rgb_show;
+    return (uchar *) dev->get_frame_data(rs::stream::color);
+ //   Mat rgb_show;
+ //   Mat rgb(480, 640, CV_8UC3, (uchar *) dev->get_frame_data(rs::stream::color));
+ //   cvtColor(rgb, rgb_show, CV_BGR2RGB);
+ //   return rgb_show;
 }
 
 bool rsdevice::isSteamEnable(){
