@@ -19,27 +19,14 @@ void rsdevice::initRsDevice()
 
 }
 
-void rsdevice::printfRsDevice(QPlainTextEdit* edit){
-
-    QString printfStr = "\nUsing device 0,name: " +devName;
-    edit->appendPlainText(printfStr);
-    printfStr.clear();
-    printfStr = "    Serial number: " + devSerial;
-    edit->appendPlainText(printfStr);
-    printfStr.clear();
-    printfStr = "    Firmware version: " + devFwVersion;
-    edit->appendPlainText(printfStr);
-    printfStr.clear();
-
-}
-
 void rsdevice::enableStream(){
     streamEnable = true;
     dev->enable_stream(rs::stream::color, 640, 480, rs::format::rgb8, 60);
+    dev->enable_stream(rs::stream::depth,640,480, rs::format::z16, 60);
     dev->start();
 }
 
-uchar * rsdevice::getFrameDate(){
+uchar * rsdevice::getFrameData(){
     dev->wait_for_frames();
     return (uchar *) dev->get_frame_data(rs::stream::color);
  //   Mat rgb_show;
@@ -50,4 +37,13 @@ uchar * rsdevice::getFrameDate(){
 
 bool rsdevice::isSteamEnable(){
     return streamEnable;
+}
+
+float rsdevice::getDistance(int x, int y){
+    uint16_t *depthImage = (uint16_t *) dev->get_frame_data(rs::stream::depth);
+    float scale = dev->get_depth_scale();
+    rs::intrinsics depthIntrin = dev->get_stream_intrinsics(rs::stream::depth);
+    uint16_t depthValue = depthImage[y * depthIntrin.width + x];
+    float depthInMeters = depthValue * scale;
+    return depthInMeters;
 }

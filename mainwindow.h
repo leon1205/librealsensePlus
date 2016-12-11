@@ -4,10 +4,13 @@
 #include <QMainWindow>
 #include <QPlainTextEdit>
 #include <QLabel>
+#include <QMouseEvent>
+#include <QString>
 
 #include <opencv2/opencv.hpp>
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
+
 
 #include "rsdevice.h"
 
@@ -34,8 +37,12 @@ private:
     QPlainTextEdit* pTextEdit;
     rsdevice* dev;
     QString picName;
-    QLabel* label;
+    QLabel* picLabel;
+    QLabel* disInfoLabel;
 
+protected:
+    void mousePressEvent(QMouseEvent *e);
+    void mouseReleaseEvent(QMouseEvent *e);
 
 };
 

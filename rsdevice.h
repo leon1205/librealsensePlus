@@ -1,7 +1,7 @@
 #ifndef RSDEVICE_H
 #define RSDEVICE_H
 #include <librealsense/rs.hpp>
-
+#include <QString>
 
 class rsdevice
 {
@@ -14,7 +14,6 @@ public:
     QString devFwVersion;
     QString devCamType;
     QString devIspFwVersion;
-    QPlainTextEdit *plainTextEdit;
     bool streamEnable;
 
 public:
@@ -44,6 +43,7 @@ public:
     void enableStream();
     uchar * getFrameData();
     bool isSteamEnable();
+    float getDistance(int x,int y);
 };
 
 #endif // RSDEVICE_H
